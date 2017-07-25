@@ -20,7 +20,7 @@ pub.findOne = async (filter) => {
 };
 
 pub.findPortfolioImg = async (portfolio, imgId) => {
-    return portfolio.getPortfolioImgs({
+    return await portfolio.getPortfolioImgs({
         'where': {
             cover_img: imgId
         }

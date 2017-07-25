@@ -1,7 +1,5 @@
 const Lookbook = require('../model/lookbook');
 const PortfolioRepository = require('./portfolioRepository');
-const PortfolioImgRepository = require('./portfolioImgRepository');
-const Qiniu = require('../../utils/qiniu');
 
 let pub = {};
 
