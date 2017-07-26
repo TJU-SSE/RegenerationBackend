@@ -5,6 +5,7 @@ const Lookbook = require('./model/lookbook');
 const Campaign = require('./model/campaign');
 const Branding = require('./model/branding');
 const Cooperation = require('./model/cooperation');
+const Designer = require('./model/designer');
 
 
 
@@ -56,6 +57,9 @@ function syncAll() {
         console.log("create Cooperation success");
     });
 
+    Designer.sync().then(function () {
+        console.log("create Designer success");
+    });
 
     News.sync().then(function () {
         console.log("create news success");
@@ -114,6 +118,7 @@ let init = function () {
     Campaign.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
     Cooperation.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
     Branding.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
+    Designer.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
 
     News.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
     ProductImg.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
