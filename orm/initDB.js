@@ -6,13 +6,10 @@ const Campaign = require('./model/campaign');
 const Branding = require('./model/branding');
 const Cooperation = require('./model/cooperation');
 const Designer = require('./model/designer');
-
-
-
-
-
-
-
+const DesignerLookbook = require('./model/designerLookbook');
+const DesignerCampaign = require('./model/designerCampaign');
+const DesignerBranding = require('./model/designerBranding');
+const DesignerCooperation = require('./model/designerCooperation');
 
 
 const News = require('./model/news');
@@ -59,6 +56,22 @@ function syncAll() {
 
     Designer.sync().then(function () {
         console.log("create Designer success");
+    });
+
+    DesignerLookbook.sync().then(function () {
+        console.log("create DesignerLookbook success");
+    });
+
+    DesignerCampaign.sync().then(function () {
+        console.log("create DesignerCampaign success");
+    });
+
+    DesignerBranding.sync().then(function () {
+        console.log("create DesignerBranding success");
+    });
+
+    DesignerCooperation.sync().then(function () {
+        console.log("create DesignerCooperation success");
     });
 
     News.sync().then(function () {
@@ -119,6 +132,14 @@ let init = function () {
     Cooperation.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
     Branding.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
     Designer.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
+    Lookbook.hasMany(DesignerLookbook, { as: 'DesignerLookbooks'});
+    Designer.hasMany(DesignerLookbook, { as: 'DesignerLookbooks'});
+    Campaign.hasMany(DesignerCampaign, { as: 'DesignerCampaigns'});
+    Designer.hasMany(DesignerCampaign, { as: 'DesignerCampaigns'});
+    Branding.hasMany(DesignerBranding, { as: 'DesignerBrandings'});
+    Designer.hasMany(DesignerBranding, { as: 'DesignerBrandings'});
+    Cooperation.hasMany(DesignerCooperation, { as: 'DesignerCooperations'});
+    Designer.hasMany(DesignerCooperation, { as: 'DesignerCooperations'});
 
     News.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
     ProductImg.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});

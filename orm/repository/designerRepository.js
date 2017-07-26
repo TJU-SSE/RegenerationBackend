@@ -9,6 +9,7 @@ pub.findAll = async () => {
 };
 
 pub.findAllFilter = async (filter) => {
+    filter['order'] = 'rank';
     let res = await Designer.findAll(filter);
     return res;
 };
@@ -50,7 +51,7 @@ pub.update = async (designer, name, identity, social, address, extraBiography, b
 };
 
 pub.updateRank = async (designer, rank) => {
-    if(rank) designer.rank = rank;
+    designer.rank = rank;
     await designer.save();
 };
 
