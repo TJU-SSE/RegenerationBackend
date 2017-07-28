@@ -10,6 +10,8 @@ const ResponseService = require('../service/responseService');
 // pre URL
 router.prefix('/admin/designer');
 
+
+// OK
 router.get('/getAllDesignerNames', async (ctx, next) => {
     try {
         let ret = await DesignerService.getAllDesignerNames();
@@ -18,6 +20,22 @@ router.get('/getAllDesignerNames', async (ctx, next) => {
         ctx.response.body = ResponseService.createErrResponse(e);
     }
 });
+
+
+
+router.get('/getAll', async (ctx, next) => {
+    try {
+        let pageOffset = ctx.query.pageOffset || 0;
+        let itemSize = ctx.query.itemSize || 20;
+        itemSize = parseInt(itemSize);
+        pageOffset = parseInt(pageOffset) * parseInt(itemSize);
+        let ret = await DesignerService.getAll(pageOffset, itemSize);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
 
 
 // OK

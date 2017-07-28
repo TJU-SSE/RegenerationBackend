@@ -20,17 +20,43 @@ pub.findAllFilter = async (filter) => {
     return await DesignerRepository.findAllFilter(filter);
 };
 
-pub.getAllDesignerNames = async () => {
-    let designers = await DesignerRepository.findAllNames();
-    let ret = [];
-    console.log(designers);
-    for (let x in designers) {
-        let designer = designers[x];
-        let id = designer.get('id');
-        let name = designer.get('name');
-        ret.push({id:id, name:name});
+pub.getAll = async (pageOffset, itemSize) => {
+    try{
+        let total = await DesignerRepository.count();
+        let designers = await DesignerRepository.findAllFilter({'limit': itemSize, 'offset': pageOffset, 'order': 'rank'});
+        let ret = { pageOffset: pageOffset, itemSize: itemSize, total: total };
+        let list = [];
+        for (let x in designers) {
+            let designer = designers[x];
+            let id = designer.get('id');
+            let name = designer.get('name');
+            let rank = designer.get('rank');
+            let img = await designer.getCoverImg();
+            let img_id = img.get('id');
+            let img_url = img.get('url');
+            list.push({id:id, name:name, rank:rank, img_id:img_id, img_url:img_url});
+        }
+        ret['designers'] = list;
+        return ret;
+    } catch (e) {
+        return e;
     }
-    return ret;
+};
+
+pub.getAllDesignerNames = async () => {
+    try{
+        let designers = await DesignerRepository.findAllNames();
+        let ret = [];
+        for (let x in designers) {
+            let designer = designers[x];
+            let id = designer.get('id');
+            let name = designer.get('name');
+            ret.push({id:id, name:name});
+        }
+        return ret;
+    } catch (e) {
+        return e;
+    }
 };
 
 pub.create = async (key, localFile, name, identity, social, address, extraBiography, biography, rank) => {
