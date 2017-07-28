@@ -20,6 +20,19 @@ pub.findAllFilter = async (filter) => {
     return await DesignerRepository.findAllFilter(filter);
 };
 
+pub.getAllDesignerNames = async () => {
+    let designers = await DesignerRepository.findAllNames();
+    let ret = [];
+    console.log(designers);
+    for (let x in designers) {
+        let designer = designers[x];
+        let id = designer.get('id');
+        let name = designer.get('name');
+        ret.push({id:id, name:name});
+    }
+    return ret;
+};
+
 pub.create = async (key, localFile, name, identity, social, address, extraBiography, biography, rank) => {
     try {
         let designer = null;

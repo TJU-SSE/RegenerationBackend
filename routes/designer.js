@@ -10,6 +10,16 @@ const ResponseService = require('../service/responseService');
 // pre URL
 router.prefix('/admin/designer');
 
+router.get('/getAllDesignerNames', async (ctx, next) => {
+    try {
+        let ret = await DesignerService.getAllDesignerNames();
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+
 // OK
 router.get('/selectByName/:name', async (ctx, next) => {
     try {

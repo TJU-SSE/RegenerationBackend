@@ -8,6 +8,16 @@ pub.findAll = async () => {
     return res;
 };
 
+pub.findAllNames = async() => {
+    let res = await Designer.findAll({
+        'attributes': [
+            'id', 'name'
+        ],
+        'order': 'name'
+    });
+    return res;
+};
+
 pub.findAllFilter = async (filter) => {
     filter['order'] = 'rank';
     let res = await Designer.findAll(filter);
