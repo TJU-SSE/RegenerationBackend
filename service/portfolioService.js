@@ -85,11 +85,8 @@ pub.deletePortfolioImg = async (portfolioImg) => {
 
 pub.deletePortfolioImgs = async (portfolio, ids) => {
     try {
-        console.log(await portfolio.getPortfolioImgs({'where': {}}));
         for(let x in ids) {
-            console.log(ids[x]);
             let portfolioImg = await pub.findPortfolioImg(portfolio, ids[x]);
-            console.log(portfolioImg);
             if (portfolioImg) {
                 await PortfolioRepository.deletePortfolioImg(portfolioImg[0]);
             }

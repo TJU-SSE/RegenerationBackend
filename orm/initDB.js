@@ -10,6 +10,8 @@ const DesignerLookbook = require('./model/designerLookbook');
 const DesignerCampaign = require('./model/designerCampaign');
 const DesignerBranding = require('./model/designerBranding');
 const DesignerCooperation = require('./model/designerCooperation');
+const Show = require('./model/show');
+const ShowLink = require('./model/showLink');
 
 
 const News = require('./model/news');
@@ -131,7 +133,15 @@ let syncAll = async () => {
         }
         console.log("create worker success");
     });
-}
+
+    Show.sync().then(async () => {
+        console.log("create show success");
+    });
+
+    ShowLink.sync().then(async () => {
+        console.log("create show_link success");
+    });
+};
 
 let init = async () => {
 
@@ -154,6 +164,10 @@ let init = async () => {
     Designer.hasMany(DesignerBranding, { as: 'DesignerBrandings'});
     Cooperation.hasMany(DesignerCooperation, { as: 'DesignerCooperations'});
     Designer.hasMany(DesignerCooperation, { as: 'DesignerCooperations'});
+    ShowLink.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
+    Show.belongsTo(Designer, { foreignKey: 'designerId', as: 'designer'});
+    Show.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
+    Show.hasMany(ShowLink, {as: 'ShowLinks'});
 
     News.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
     ProductImg.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
