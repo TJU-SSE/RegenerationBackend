@@ -1,6 +1,6 @@
 const News = require('../model/news');
 const NewsTagRepository = require('./newsTagRepository');
-const TagRepository = require('./TagRepository');
+const TagRepository = require('./tagRepository');
 const Qiniu = require('../../utils/qiniu');
 
 let pub = {};

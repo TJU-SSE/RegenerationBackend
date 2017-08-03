@@ -1,6 +1,6 @@
 const router = require('koa-router')();
 
-const IndexImgService = require('../service/IndexImgService');
+const IndexImgService = require('../service/indexImgService');
 const NewsService = require('../service/newsService');
 const ResponseService = require('../service/responseService');
 
