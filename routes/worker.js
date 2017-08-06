@@ -58,8 +58,9 @@ router.post('/create', async (ctx, next) => {
         let name = ctx.request.body.fields.name || '';
         let email = ctx.request.body.fields.email || '';
         let rank = ctx.request.body.fields.rank || 0;
+        let identity = ctx.request.body.fields.identity || '';
         let timestamp = Date.parse(new Date());
-        let ret = await WorkerService.create(timestamp, file.path, name, email, rank);
+        let ret = await WorkerService.create(timestamp, file.path, name, email, rank, identity);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch (e) {
         ctx.response.body = ResponseService.createErrResponse(e);
@@ -75,7 +76,9 @@ router.post('/update', async (ctx, next) => {
         if (!worker) { ctx.response.body = ResponseService.createErrResponse('Worker not found'); return; }
         let name = ctx.request.body.name || '';
         let email = ctx.request.body.email || '';
-        let ret = await WorkerService.update(worker, name, email);
+        let desc = ctx.request.body.desc || '';
+        let rank = ctx.request.body.rank || 0;
+        let ret = await WorkerService.update(worker, name, email, desc, rank);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch(e) {
         ctx.response.body = ResponseService.createErrResponse(e);

@@ -22,8 +22,8 @@ pub.findOne = async (filter) => {
     return res;
 };
 
-pub.create = async (name, email, rank, img) =>{
-    let worker = await Worker.create({ name: name, email: email, rank: rank });
+pub.create = async (name, email, rank, img, identity) =>{
+    let worker = await Worker.create({ name: name, email: email, rank: rank, identity: identity });
     worker.setCoverImg(img);
     return worker;
 };
@@ -34,9 +34,11 @@ pub.updateImg = async (worker, img) => {
     worker.setCoverImg(img);
 };
 
-pub.update = async (worker, name, email) => {
+pub.update = async (worker, name, email, desc, rank) => {
     if(name) worker.name = name;
     if(email) worker.email = email;
+    if(desc) worker.desc = desc;
+    if(rank) worker.rank = rank;
     await worker.save();
 };
 

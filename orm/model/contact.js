@@ -12,7 +12,8 @@ let Contact = sequlize.define('contact', {
     fax: Sequlize.STRING(100),
     address: Sequlize.STRING(1000),
     link: Sequlize.STRING(1000),
-    social: Sequlize.STRING(5000)
+    social: Sequlize.STRING(5000),
+    desc: Sequlize.STRING(5000)
 }, {
     freezeTableName: true,
     timestamps: true,

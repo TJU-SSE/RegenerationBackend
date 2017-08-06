@@ -15,11 +15,11 @@ pub.findAllFilter = async (filter) => {
     return await WorkerRepository.findAllFilter(filter);
 };
 
-pub.create = async (key, localFile, name, email, rank) => {
+pub.create = async (key, localFile, name, email, rank, identity) => {
     try {
         let worker = null;
         await Qiniu.uploadFile(key, localFile, async function (img) {
-            worker = await WorkerRepository.create(name, email, rank, img);
+            worker = await WorkerRepository.create(name, email, rank, img, identity);
         });
         let id = worker.get('id');
         let img = await worker.getCoverImg();
@@ -42,9 +42,9 @@ pub.updateImg = async (worker, key, localFile) => {
     }
 };
 
-pub.update = async (worker, name, email) => {
+pub.update = async (worker, name, email, desc, rank) => {
     try {
-        await WorkerRepository.update(worker, name, email);
+        await WorkerRepository.update(worker, name, email, desc, rank);
         return 'success';
     } catch (e) {
         return e;
@@ -100,6 +100,7 @@ pub.createWorkersViewModel = async (workers, pageOffset, itemSize, total) => {
                 name: name,
                 email: email,
                 rank: rank,
+                identity: worker.get('identity'),
                 img_id: img_id,
                 img_url: img_url
             })
