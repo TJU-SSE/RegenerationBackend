@@ -11,6 +11,7 @@ let Designer = sequlize.define('designer', {
     identity: Sequlize.STRING(1000),
     social: Sequlize.STRING(1000),
     address: Sequlize.STRING(1000),
+    first: Sequlize.STRING(10),
     extraBiography: Sequlize.STRING(5000),
     biography: Sequlize.STRING(5000),
     rank: Sequlize.DOUBLE,

@@ -18,6 +18,16 @@ pub.findAllNames = async() => {
     return res;
 };
 
+pub.findAllOrderByFirst = async() => {
+    let res = await Designer.findAll({
+        'attributes': [
+            'id', 'name', 'first'
+        ],
+        'order': 'first, rank'
+    });
+    return res;
+};
+
 pub.findAllFilter = async (filter) => {
     filter['order'] = 'rank';
     let res = await Designer.findAll(filter);
@@ -37,8 +47,8 @@ pub.count = async  () => {
     return await Designer.count();
 };
 
-pub.create = async (name, identity, social, address, extraBiography, biography, rank, img) =>{
-    let designer = await Designer.create({ name: name, identity: identity, social: social, address: address, extraBiography: extraBiography, biography: biography, rank: rank, viewcount: 0 });
+pub.create = async (name, identity, social, address, extraBiography, biography, rank, first, img) =>{
+    let designer = await Designer.create({ name: name, identity: identity, social: social, address: address, extraBiography: extraBiography, biography: biography, rank: rank, first: first, viewcount: 0 });
     designer.setCoverImg(img);
     return designer;
 };
@@ -49,7 +59,7 @@ pub.updateImg = async (designer, img) => {
     designer.setCoverImg(img);
 };
 
-pub.update = async (designer, name, identity, social, address, extraBiography, biography, rank) => {
+pub.update = async (designer, name, identity, social, address, extraBiography, biography, first, rank) => {
     if(name) designer.name = name;
     if(identity) designer.identity = identity;
     if(social) designer.social = social;
@@ -57,6 +67,7 @@ pub.update = async (designer, name, identity, social, address, extraBiography, b
     if(extraBiography) designer.extraBiography = extraBiography;
     if(biography) designer.biography = biography;
     if(rank) designer.rank = rank;
+    if(first) designer.first = first;
     await designer.save();
 };
 
