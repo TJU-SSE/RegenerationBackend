@@ -72,7 +72,6 @@ pub.getAllDesignerNamesByFirst = async () => {
             let id = designer.get('id');
             let name = designer.get('name');
             let first = designer.get('first');
-            console.log(last+' '+first);
             if (first != last) {
                 ret[last] = list;
                 list = [];
@@ -80,6 +79,7 @@ pub.getAllDesignerNamesByFirst = async () => {
             }
             list.push({id:id, name:name})
         }
+        ret[last] = list;
         return ret;
     } catch (e) {
         return e;

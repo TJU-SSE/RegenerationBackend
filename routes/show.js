@@ -52,6 +52,16 @@ router.get('/getAll',  async (ctx, next) => {
 });
 
 // OK
+router.get('/getAllByYear',  async (ctx, next) => {
+    try {
+        let ret = await ShowService.getAllByYear();
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+// OK
 router.post('/create', async (ctx, next) => {
     try {
         let file = ctx.request.body.files.img;
