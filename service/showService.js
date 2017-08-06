@@ -47,6 +47,38 @@ pub.getAll = async (pageOffset, itemSize) => {
     }
 };
 
+pub.getAllByYear = async () => {
+    try {
+        let shows = await ShowRepository.findAllByYear();
+        let ret = {};
+        let list = [];
+        let last = '';
+        for (let x in shows) {
+            let show = shows[x];
+            let id = show.get('id');
+            let name = show.get('name');
+            let desc = show.get('desc');
+            let rank = show.get('rank');
+            let year = show.get('year');
+            let img = await show.getCoverImg();
+            let img_id = img.get('id');
+            let img_url = img.get('url');
+            if (year != last) {
+                if (list.length > 0) {
+                    ret[last] = list;
+                }
+                list = [];
+                last = year;
+            }
+            list.push({id: id, name: name, desc: desc, rank: rank, year: year, img_id: img_id, img_url: img_url});
+        }
+        ret[last] = list;
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
 pub.updateImg = async (show, key, localFile) => {
     try {
         await Qiniu.uploadFile(key, localFile, async function (img) {

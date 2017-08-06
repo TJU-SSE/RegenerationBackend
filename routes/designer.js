@@ -22,7 +22,18 @@ router.get('/getAllDesignerNames', async (ctx, next) => {
 });
 
 
+// OK
+router.get('/getAllDesignerNamesByFirst', async (ctx, next) => {
+    try {
+        let ret = await DesignerService.getAllDesignerNamesByFirst();
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
 
+
+// OK
 router.get('/getAll', async (ctx, next) => {
     try {
         let pageOffset = ctx.query.pageOffset || 0;
@@ -94,8 +105,9 @@ router.post('/create', async (ctx, next) => {
         let extraBiography = ctx.request.body.fields.extraBiography || '';
         let biography = ctx.request.body.fields.biography || '';
         let rank = ctx.request.body.fields.rank || 0;
+        let first = ctx.request.body.fields.first || '';
         let timestamp = Date.parse(new Date());
-        let ret = await DesignerService.create(timestamp, file.path, name, identity, social, address, extraBiography, biography, rank);
+        let ret = await DesignerService.create(timestamp, file.path, name, identity, social, address, extraBiography, biography, rank, first);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch (e) {
         ctx.response.body = ResponseService.createErrResponse(e);
@@ -115,7 +127,8 @@ router.post('/update', async (ctx, next) => {
         let address = ctx.request.body.fields.address || '';
         let extraBiography = ctx.request.body.fields.extraBiography || '';
         let biography = ctx.request.body.fields.biography || '';
-        let ret = await DesignerService.update(designer, name, identity, social, address, extraBiography, biography);
+        let first = ctx.request.body.fields.first || '';
+        let ret = await DesignerService.update(designer, name, identity, social, address, extraBiography, biography, first);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch(e) {
         ctx.response.body = ResponseService.createErrResponse(e);

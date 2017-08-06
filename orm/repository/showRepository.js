@@ -14,6 +14,15 @@ pub.findAllFilter = async (filter) => {
     return res;
 };
 
+pub.findAllByYear = async () => {
+    let res = await Show.findAll(
+        {
+            'order': 'year, rank'
+        }
+    );
+    return res;
+};
+
 pub.count = async () => {
     return await Show.count();
 };

@@ -9,6 +9,7 @@ let Worker = sequlize.define('worker', {
     },
     name: Sequlize.STRING(100),
     email: Sequlize.STRING(100),
+    identity: Sequlize.STRING(100),
     rank: Sequlize.DOUBLE
 }, {
     freezeTableName: true,

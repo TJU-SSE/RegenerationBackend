@@ -27,7 +27,7 @@ pub.updateImg = async (key, localFile) => {
     }
 };
 
-pub.update = async (phone, photography, fax, address, link, social) => {
+pub.update = async (phone, photography, fax, address, link, social, desc) => {
     try {
         let contact = await pub.get();
         if(phone) contact.phone = phone;
@@ -36,7 +36,10 @@ pub.update = async (phone, photography, fax, address, link, social) => {
         if(address) contact.address = address;
         if(link) contact.link = link;
         if(social) contact.social = social;
+        if(desc) contact.desc = desc;
+        console.log('before save-----------', contact)
         await contact.save();
+      console.log('after save-----------', contact)
         return 'success';
     } catch (e) {
         return e;

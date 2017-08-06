@@ -26,7 +26,8 @@ router.post('/update', async (ctx, next) => {
         let address = ctx.request.body.address || '';
         let link = ctx.request.body.link || '';
         let social = ctx.request.body.social || '';
-        let ret = await ContactRepository.update(phone, photography, fax, address, link, social);
+        let desc = ctx.request.body.desc || '';
+        let ret = await ContactRepository.update(phone, photography, fax, address, link, social, desc);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch(e) {
         ctx.response.body = ResponseService.createErrResponse(e);

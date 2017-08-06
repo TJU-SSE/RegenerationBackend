@@ -31,10 +31,11 @@ pub.getAll = async (pageOffset, itemSize) => {
             let id = designer.get('id');
             let name = designer.get('name');
             let rank = designer.get('rank');
+            let first = designer.get('first');
             let img = await designer.getCoverImg();
             let img_id = img.get('id');
             let img_url = img.get('url');
-            list.push({id:id, name:name, rank:rank, img_id:img_id, img_url:img_url});
+            list.push({id:id, name:name, rank:rank, first:first, img_id:img_id, img_url:img_url});
         }
         ret['designers'] = list;
         return ret;
@@ -51,6 +52,7 @@ pub.getAllDesignerNames = async () => {
             let designer = designers[x];
             let id = designer.get('id');
             let name = designer.get('name');
+            let first = designer.get('first');
             ret.push({id:id, name:name});
         }
         return ret;
@@ -59,11 +61,36 @@ pub.getAllDesignerNames = async () => {
     }
 };
 
-pub.create = async (key, localFile, name, identity, social, address, extraBiography, biography, rank) => {
+pub.getAllDesignerNamesByFirst = async () => {
+    try{
+        let designers = await DesignerRepository.findAllOrderByFirst();
+        let ret = {};
+        let list = [];
+        let last = 'a';
+        for (let x in designers) {
+            let designer = designers[x];
+            let id = designer.get('id');
+            let name = designer.get('name');
+            let first = designer.get('first');
+            if (first != last) {
+                ret[last] = list;
+                list = [];
+                last = first;
+            }
+            list.push({id:id, name:name})
+        }
+        ret[last] = list;
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
+pub.create = async (key, localFile, name, identity, social, address, extraBiography, biography, rank, first) => {
     try {
         let designer = null;
         await Qiniu.uploadFile(key, localFile, async function (img) {
-            designer = await DesignerRepository.create(name, identity, social, address, extraBiography, biography, rank, img);
+            designer = await DesignerRepository.create(name, identity, social, address, extraBiography, biography, rank, first, img);
         });
         let id = designer.get('id');
         return {id:id};
@@ -83,9 +110,9 @@ pub.updateImg = async (designer, key, localFile) => {
     }
 };
 
-pub.update = async (designer, name, identity, social, address, extraBiography, biography) => {
+pub.update = async (designer, name, identity, social, address, extraBiography, biography, first) => {
     try {
-        await DesignerRepository.update(designer, name, identity, social, address, extraBiography, biography);
+        await DesignerRepository.update(designer, name, identity, social, address, extraBiography, biography, first);
         return 'success';
     } catch (e) {
         return e;
@@ -112,10 +139,11 @@ pub.createDesignerViewModel = async (designer) => {
         let biography = designer.get('biography');
         let rank = designer.get('rank');
         let viewcount = designer.get('viewcount');
+        let first = designer.get('first');
         let img = await designer.getCoverImg();
         let img_id = img.get('id');
         let img_url = img.get('url');
-        return DesignerViewModel.createDesigner(id, name, identity, social, address, extraBiography, biography, rank, viewcount, img_id, img_url);
+        return DesignerViewModel.createDesigner(id, name, identity, social, address, extraBiography, biography, rank, viewcount, first, img_id, img_url);
     } catch (e) {
         return e;
     }
@@ -132,10 +160,11 @@ pub.createDesignersViewModel = async (designers, pageOffset, itemSize) => {
             let name = designer.get('name');
             let identity = designer.get('identity');
             let rank = designer.get('rank');
+            let first = designer.get('first');
             let img = await designer.getCoverImg();
             let img_id = img.get('id');
             let img_url = img.get('url');
-            list.push(DesignerViewModel.createDesignerBrief(id, name, identity, rank, img_id, img_url))
+            list.push(DesignerViewModel.createDesignerBrief(id, name, identity, rank, first, img_id, img_url))
         }
         ret['designers'] = list;
         return ret;
@@ -143,44 +172,6 @@ pub.createDesignersViewModel = async (designers, pageOffset, itemSize) => {
         return e;
     }
 };
-
-// pub.createArtistProduct = async (artist, product, rank) => {
-//     try {
-//         await ArtistProductRepository.create(artist, product, rank);
-//         return 'success';
-//     } catch (e) {
-//         return e;
-//     }
-// };
-//
-// pub.createArtistProductsViewModel = async (artist, pageOffset, itemSize) => {
-//     try {
-//         let artistProducts = await ArtistProductRepository.getArtistProducts(artist);
-//         let ret = { pageOffset: pageOffset, itemSize: itemSize, total: artistProducts.length };
-//         let list = [];
-//         for(let x = pageOffset * itemSize; x < artistProducts.length && x < pageOffset * itemSize + itemSize; x++ ) {
-//             let artistProduct = artistProducts[x];
-//             let artistProductId = artistProduct.get('id');
-//             let rank = artistProduct.get('rank');
-//             let productId = artistProduct.get('productId');
-//             let product = await ProductRepository.findOne({id:productId});
-//             let title = product.get('title');
-//             let session = product.get('session');
-//             let releaseTime = product.get('releaseTime');
-//             let introduction = product.get('introduction');
-//             let img = await product.getCoverImg();
-//             let img_id = img.get('id');
-//             let img_url = img.get('url');
-//             list.push(ArtistViewModel.createArtistProducts(
-//                 artistProductId, rank, productId, title, session, releaseTime, introduction, img_id, img_url)
-//             );
-//         }
-//         ret['artistProducts'] = list;
-//         return ret;
-//     } catch (e) {
-//         return e;
-//     }
-// };
 
 pub.updateRanks = async (ranks) => {
     try {
