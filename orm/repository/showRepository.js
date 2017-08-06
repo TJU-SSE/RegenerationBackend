@@ -60,7 +60,7 @@ pub.updateDesigner = async (show, designerId) => {
 pub.update = async (show, name, desc, year) => {
     if (name) show.name = name;
     if (desc) show.desc = desc;
-    if (year) show.name = year;
+    if (year) show.year = year;
     await show.save();
 };
 
