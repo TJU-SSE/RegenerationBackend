@@ -52,6 +52,17 @@ router.get('/getAll',  async (ctx, next) => {
 });
 
 // OK
+router.get('/getAllByDesignerId/:id',  async (ctx, next) => {
+    try {
+        let id = ctx.params.id;
+        let ret = await ShowService.getAllByDesignerId(id);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+// OK
 router.get('/getAllByYear',  async (ctx, next) => {
     try {
         let ret = await ShowService.getAllByYear();
