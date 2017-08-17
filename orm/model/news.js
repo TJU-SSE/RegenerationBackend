@@ -11,8 +11,7 @@ let News = sequlize.define('news', {
     writer: Sequlize.STRING(100),
     content: Sequlize.STRING(10000),
     time: Sequlize.STRING(100),
-    viewcount: Sequlize.BIGINT,
-    rank: Sequlize.DOUBLE
+    viewcount: Sequlize.BIGINT
 }, {
     freezeTableName: true,
     timestamps: true,
