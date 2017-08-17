@@ -50,13 +50,10 @@ pub.update = async (news, title, writer, content, time, tags) => {
             let newsTag = oldTags[x];
             await NewsTagRepository.delete(newsTag);
         }
-        let newsTags = [];
-        for (let x in tags) {
-            let tagTitle = tags[x];
-            let tag = await TagRepository.findOrCreate(tagTitle);
-            let newsTag = await NewsTagRepository.create(news, tag);
-            newsTags.push(newsTag);
-        }
+
+        let tag = await TagRepository.findOrCreate(tags);
+        let newsTag = await NewsTagRepository.create(news, tag);
+        newsTags.push(newsTag);
         await news.setNewsTags(newsTags);
     }
     await news.save();
