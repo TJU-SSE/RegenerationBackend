@@ -5,8 +5,13 @@ const Qiniu = require('../../utils/qiniu');
 
 let pub = {};
 
-pub.findAll = async () => {
-    let res = await News.findAll();
+pub.getTotalSize = async () => {
+    return await News.count()
+};
+
+pub.findAll = async (filter) => {
+    filter['order'] = 'time DESC';
+    let res = await News.findAll(filter);
     return res;
 };
 
