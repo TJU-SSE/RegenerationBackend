@@ -104,6 +104,17 @@ router.post('/delete', async (ctx, next) => {
     }
 });
 
+router.get('/recommand/:tagId', async (ctx, next) => {
+    try {
+        let tagId = ctx.params.tagId;
+        if (!tagId) { ctx.response.body = ResponseService.createErrResponse('TagId not found'); return; }
+        let ret = await NewsService.getRecommand({tagId: tagId});
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
 module.exports = router;
 
 // x-www-form-urlencoded -> body.xx;

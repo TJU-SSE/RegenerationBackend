@@ -1,6 +1,7 @@
 const NewsRepository = require('../orm/repository/newsRepository');
 const TagRepository = require('../orm/repository/tagRepository');
 const NewsViewModel = require('../view_model/news');
+const NewsTagRepository = require('../orm/repository/newsTagRepository');
 const Qiniu = require('../utils/qiniu');
 
 let pub = {};
@@ -73,6 +74,7 @@ pub.createNewsViewModel = async (news) => {
             let newsTag = newsTags[x];
             let tagId = newsTag.get('tagId');
             let tag = await TagRepository.findOne({id: tagId});
+            console.log(tagId);
             let tagTitle = tag.get('title');
             tags.push(tagTitle);
         }
@@ -135,6 +137,47 @@ pub.createIndexNewsesViewModel = async (newses) => {
                 ret['newsIndex'].push(NewsViewModel.createIndexNews1(id, title, writer, content, time, rank, img_id, img_url));
             } else {
                 ret['news'].push(NewsViewModel.createIndexNews2(id, title, rank, img_id, img_url));
+            }
+        }
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
+pub.getRecommand = async function (filter) {
+    try {
+        let findNewsTags = await NewsTagRepository.findAllFilter(filter);
+        let newses = [];
+        for (let i in findNewsTags) {
+            let newsId = findNewsTags[i].get('newsId');
+            let news1 = await NewsRepository.findOne({id:newsId});
+            newses.push(news1);
+        }
+        newses.sort((a, b) => {
+            return b.time - a.time;
+        });
+        let ret = [];
+        for (let x in newses) {
+            if (x < 4){
+                let news = newses[x];
+                let id = news.get('id');
+                let title = news.get('title');
+                let writer = news.get('writer');
+                let time = news.get('time');
+                let img = await news.getCoverImg();
+                let img_id = img.get('id');
+                let img_url = img.get('url');
+                let newsTags = await news.getNewsTags();
+                let tags = [];
+                for (let y in newsTags) {
+                    let newsTag = newsTags[y];
+                    let tagId = newsTag.get('tagId');
+                    let tag = await TagRepository.findOne({id: tagId});
+                    let tagTitle = tag.get('title');
+                    tags.push(tagTitle);
+                }
+                ret.push(NewsViewModel.createNewses(id, title, writer, time, img_id, img_url, tags));
             }
         }
         return ret;
