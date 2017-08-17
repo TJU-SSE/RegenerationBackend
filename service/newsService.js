@@ -10,8 +10,12 @@ pub.findOne = async (filter) => {
     return await NewsRepository.findOne(filter);
 };
 
-pub.findAll = async () => {
-    return await NewsRepository.findAll();
+pub.getTotalSize = async () => {
+    return await NewsRepository.getTotalSize();
+};
+
+pub.findAll = async (filter) => {
+    return await NewsRepository.findAll(filter);
 };
 
 pub.create = async (key, localFile, title, writer, content, time, tags) => {
@@ -83,17 +87,16 @@ pub.createNewsViewModel = async (news) => {
     }
 };
 
-pub.createNewsesViewModel = async (newses, pageOffset, itemSize) => {
+pub.createNewsesViewModel = async (newses, pageOffset, itemSize, total) => {
     try {
-        let ret = { pageOffset: pageOffset, itemSize: itemSize, total: newses.length };
+        let ret = { pageOffset: pageOffset, itemSize: itemSize, total: total };
         let list = [];
-        for (let x = pageOffset * itemSize; x < newses.length && x < pageOffset * itemSize + itemSize; x++) {
+        for (let x in newses) {
             let news = newses[x];
             let id = news.get('id');
             let title = news.get('title');
             let writer = news.get('writer');
             let time = news.get('time');
-            let rank = news.get('rank');
             let img = await news.getCoverImg();
             let img_id = img.get('id');
             let img_url = img.get('url');
@@ -106,11 +109,9 @@ pub.createNewsesViewModel = async (newses, pageOffset, itemSize) => {
                 let tagTitle = tag.get('title');
                 tags.push({tagId:tagId, tagTitle:tagTitle});
             }
-            list.push(NewsViewModel.createNewses(id, title, writer, time, rank, img_id, img_url, tags));
+            list.push(NewsViewModel.createNewses(id, title, writer, time, img_id, img_url, tags))
         }
-        ret['newses'] = list.sort((a, b) => {
-            return b.time - a.time;
-        });
+        ret['newses'] = list;
         return ret;
     } catch (e) {
         return e;
