@@ -74,9 +74,8 @@ pub.createNewsViewModel = async (news) => {
             let newsTag = newsTags[x];
             let tagId = newsTag.get('tagId');
             let tag = await TagRepository.findOne({id: tagId});
-            console.log(tagId);
             let tagTitle = tag.get('title');
-            tags.push(tagTitle);
+            tags.push({tagId:tagId, tagTitle:tagTitle});
         }
         return NewsViewModel.createNews(id, title, writer, content, time, rank, viewcount, img_id, img_url, tags);
     } catch (e) {
@@ -105,7 +104,7 @@ pub.createNewsesViewModel = async (newses, pageOffset, itemSize) => {
                 let tagId = newsTag.get('tagId');
                 let tag = await TagRepository.findOne({id: tagId});
                 let tagTitle = tag.get('title');
-                tags.push(tagTitle);
+                tags.push({tagId:tagId, tagTitle:tagTitle});
             }
             list.push(NewsViewModel.createNewses(id, title, writer, time, rank, img_id, img_url, tags));
         }
@@ -175,7 +174,7 @@ pub.getRecommand = async function (filter) {
                     let tagId = newsTag.get('tagId');
                     let tag = await TagRepository.findOne({id: tagId});
                     let tagTitle = tag.get('title');
-                    tags.push(tagTitle);
+                    tags.push({tagId:tagId, tagTitle:tagTitle});
                 }
                 ret.push(NewsViewModel.createNewses(id, title, writer, time, img_id, img_url, tags));
             }
