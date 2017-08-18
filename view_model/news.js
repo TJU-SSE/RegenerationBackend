@@ -15,13 +15,12 @@ pub.createNews = function (id, title, writer, content, time, rank, viewcount, im
     };
 };
 
-pub.createNewses = function (id, title, writer, time, rank, img_id, img_url, tags) {
+pub.createNewses = function (id, title, writer, time, img_id, img_url, tags) {
     return {
         newsId: id,
         title: title,
         writer: writer,
         time: time,
-        rank: rank,
         cover_img: img_url,
         tag: tags
     }
