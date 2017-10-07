@@ -55,8 +55,18 @@ pub.create = async (name, identity, social, address, extraBiography, biography, 
 
 pub.updateImg = async (designer, img) => {
     let oldImg = await designer.getCoverImg();
-    await Qiniu.deleteFile(oldImg);
+    if (oldImg) {
+        await Qiniu.deleteFile(oldImg);
+    }
     designer.setCoverImg(img);
+};
+
+pub.updateTitleImg = async (designer, img) => {
+    let oldImg = await designer.getTitleImg();
+    if (oldImg) {
+        await Qiniu.deleteFile(oldImg);
+    }
+    designer.setTitleImg(img);
 };
 
 pub.update = async (designer, name, identity, social, address, extraBiography, biography, first, rank) => {

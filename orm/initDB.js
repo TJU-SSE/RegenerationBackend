@@ -156,6 +156,7 @@ let init = async () => {
     Cooperation.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
     Branding.belongsTo(Portfolio, { foreignKey: 'portfolioId', as: 'Portfolio'});
     Designer.belongsTo(Img, { foreignKey: 'cover_img', as: 'coverImg'});
+    Designer.belongsTo(Img, { foreignKey: 'title_img', as: 'titleImg'});
     Lookbook.hasMany(DesignerLookbook, { as: 'DesignerLookbooks'});
     Designer.hasMany(DesignerLookbook, { as: 'DesignerLookbooks'});
     Campaign.hasMany(DesignerCampaign, { as: 'DesignerCampaigns'});

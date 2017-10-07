@@ -151,6 +151,21 @@ router.post('/updateImg',  async (ctx, next) => {
     }
 });
 
+router.post('/updateTitleImg', async (ctx, next) => {
+    try {
+        let id = ctx.request.body.fields.id;
+        if (!id) { ctx.response.body = ResponseService.createErrResponse('Id not found'); return; }
+        let designer = await DesignerService.findOne({id: id});
+        if (!designer) { ctx.response.body = ResponseService.createErrResponse('Designer not found'); return; }
+        let file = ctx.request.body.files.img;
+        let timestamp = Date.parse(new Date());
+        let ret = await DesignerService.updateTitleImg(designer, timestamp, file.path);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
 // OK
 router.post('/updateRanks', async (ctx, next) => {
     try {

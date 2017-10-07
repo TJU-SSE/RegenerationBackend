@@ -110,6 +110,17 @@ pub.updateImg = async (designer, key, localFile) => {
     }
 };
 
+pub.updateTitleImg = async (designer, key, localFile) => {
+    try {
+        await Qiniu.uploadFile(key, localFile, async function (img) {
+            await DesignerRepository.updateTitleImg(designer, img);
+        });
+        return 'success';
+    } catch (e) {
+        return e;
+    }
+};
+
 pub.update = async (designer, name, identity, social, address, extraBiography, biography, first) => {
     try {
         await DesignerRepository.update(designer, name, identity, social, address, extraBiography, biography, first);
@@ -141,9 +152,12 @@ pub.createDesignerViewModel = async (designer) => {
         let viewcount = designer.get('viewcount');
         let first = designer.get('first');
         let img = await designer.getCoverImg();
-        let img_id = img.get('id');
-        let img_url = img.get('url');
-        return DesignerViewModel.createDesigner(id, name, identity, social, address, extraBiography, biography, rank, viewcount, first, img_id, img_url);
+        let img_id = img ? img.get('id') : null;
+        let img_url = img ? img.get('url') : null;
+        let title_img = await designer.getTitleImg();
+        let title_img_id = title_img ? title_img.get('id') : null;
+        let title_img_url = title_img ? title_img.get('url') : null;
+        return DesignerViewModel.createDesigner(id, name, identity, social, address, extraBiography, biography, rank, viewcount, first, img_id, img_url, title_img_id, title_img_url);
     } catch (e) {
         return e;
     }
@@ -162,9 +176,12 @@ pub.createDesignersViewModel = async (designers, pageOffset, itemSize) => {
             let rank = designer.get('rank');
             let first = designer.get('first');
             let img = await designer.getCoverImg();
-            let img_id = img.get('id');
-            let img_url = img.get('url');
-            list.push(DesignerViewModel.createDesignerBrief(id, name, identity, rank, first, img_id, img_url))
+            let img_id = img ? img.get('id') : null;
+            let img_url = img ? img.get('url') : null;
+            let title_img = await designer.getTitleImg();
+            let title_img_id = title_img ? title_img.get('id') : null;
+            let title_img_url = title_img ? title_img.get('url') : null;
+            list.push(DesignerViewModel.createDesignerBrief(id, name, identity, rank, first, img_id, img_url, title_img_id, title_img_url))
         }
         ret['designers'] = list;
         return ret;
