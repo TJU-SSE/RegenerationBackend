@@ -118,6 +118,36 @@ pub.createNewsesViewModel = async (newses, pageOffset, itemSize, total) => {
     }
 };
 
+pub.createNewsesViewModelWithoutPage = async (newses) => {
+    try {
+        let ret = {};
+        let list = [];
+        for (let x in newses) {
+            let news = newses[x];
+            let id = news.get('id');
+            let title = news.get('title');
+            let writer = news.get('writer');
+            let time = news.get('time');
+            let img = await news.getCoverImg();
+            let img_id = img.get('id');
+            let img_url = img.get('url');
+            let newsTags = await news.getNewsTags();
+            let tags = [];
+            for (let x in newsTags) {
+                let newsTag = newsTags[x];
+                let tagId = newsTag.get('tagId');
+                let tag = await TagRepository.findOne({id: tagId});
+                let tagTitle = tag.get('title');
+                tags.push({tagId:tagId, tagTitle:tagTitle});
+            }
+            list.push(NewsViewModel.createNewses(id, title, writer, time, img_id, img_url, tags))
+        }
+        ret['newses'] = list;
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
 
 pub.createIndexNewsesViewModel = async (newses) => {
     try {

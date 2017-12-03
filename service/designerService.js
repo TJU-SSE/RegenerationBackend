@@ -193,6 +193,32 @@ pub.createDesignersViewModel = async (designers, pageOffset, itemSize) => {
     }
 };
 
+pub.createDesignersViewModelWithoutPage = async (designers) => {
+    try {
+        let ret = {};
+        let list = [];
+        for(let x in designers) {
+            let designer = designers[x];
+            let id = designer.get('id');
+            let name = designer.get('name');
+            let identity = designer.get('identity');
+            let rank = designer.get('rank');
+            let first = designer.get('first');
+            let img = await designer.getCoverImg();
+            let img_id = img ? img.get('id') : null;
+            let img_url = img ? img.get('url') : null;
+            let title_img = await designer.getTitleImg();
+            let title_img_id = title_img ? title_img.get('id') : null;
+            let title_img_url = title_img ? title_img.get('url') : null;
+            list.push(DesignerViewModel.createDesignerBrief(id, name, identity, rank, first, img_id, img_url, title_img_id, title_img_url))
+        }
+        ret['designers'] = list;
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
 pub.updateRanks = async (ranks) => {
     try {
         let designers = await DesignerRepository.findAll();

@@ -27,12 +27,23 @@ router.get('/selectByName/:name', async (ctx, next) => {
     try {
         let name = ctx.params.name;
         if (!name) { ctx.response.body = ResponseService.createErrResponse('Name not found'); return; }
-        console.log(name);
         let show = await ShowService.findOne({name: name});
         if (!show) { ctx.response.body = ResponseService.createErrResponse('Show not found'); return; }
         let ret = await ShowService.createShowViewModel(show);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+// OK
+router.get('/search/:name',  async (ctx, next) => {
+    try {
+        let name = ctx.params.name;
+        if (!name) { ctx.response.body = ResponseService.createErrResponse('Name not found'); return; }
+        let ret = await ShowService.search(name);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
         ctx.response.body = ResponseService.createErrResponse(e);
     }
 });

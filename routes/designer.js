@@ -64,6 +64,19 @@ router.get('/selectByName/:name', async (ctx, next) => {
 });
 
 // OK
+router.get('/search/:name', async (ctx, next) => {
+    try {
+        let name = ctx.params.name;
+        if (!name) { ctx.response.body = ResponseService.createErrResponse('Name not found'); return; }
+        let designers = await DesignerService.findAllFilter({where: {name: {'$like': '%'+name+'%'}}, 'order': 'rank'});
+        let ret = await DesignerService.createDesignersViewModelWithoutPage(designers);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+// OK
 router.get('/selectByIdentity/:identity', async (ctx, next) => {
     try {
         let identity = ctx.params.identity;

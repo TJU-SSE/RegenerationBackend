@@ -47,6 +47,33 @@ pub.getAll = async (pageOffset, itemSize) => {
     }
 };
 
+pub.search = async (name) => {
+    try {
+        let shows = await ShowRepository.findAllFilter({
+            'where': {'name': {'$like': '%'+name+'%'}},
+            'order': 'rank'
+        });
+        let ret = {};
+        let list = [];
+        for (let x in shows) {
+            let show = shows[x];
+            let id = show.get('id');
+            let name = show.get('name');
+            let desc = show.get('desc');
+            let rank = show.get('rank');
+            let year = show.get('year');
+            let img = await show.getCoverImg();
+            let img_id = img.get('id');
+            let img_url = img.get('url');
+            list.push({id: id, name: name, desc: desc, rank: rank, year: year, img_id: img_id, img_url: img_url});
+        }
+        ret['shows'] = list;
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
 pub.getAllByDesignerId = async (designerId) => {
   try {
       let shows = await ShowRepository.findAllFilter({where:{designerId:designerId}});

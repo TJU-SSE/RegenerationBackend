@@ -31,6 +31,20 @@ router.get('/getAll', async (ctx, next) => {
     }
 });
 
+router.get('/search/:title', async (ctx, next) => {
+    try {
+        let title = ctx.params.title;
+        if (!title) { ctx.response.body = ResponseService.createErrResponse('Title not found'); return; }
+        let newses = await NewsService.findAll({
+            'where': {'title': {'$like': '%'+title+'%'}},
+            'order': 'time DESC'
+        });
+        let ret = await NewsService.createNewsesViewModelWithoutPage(newses);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
 
 // OK
 router.post('/create', async (ctx, next) => {
