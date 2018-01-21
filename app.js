@@ -24,6 +24,7 @@ const indexImg = require('./routes/indexImg');
 const tag = require('./routes/tag');
 const worker = require('./routes/worker');
 const contact = require('./routes/contact');
+const config_api = require('./routes/config');
 const show = require('./routes/show');
 const redis = require('./routes/redis');
 
@@ -96,6 +97,7 @@ app.use(tag.routes(), tag.allowedMethods());
 app.use(worker.routes(), worker.allowedMethods());
 app.use(show.routes(), show.allowedMethods());
 app.use(contact.routes(), contact.allowedMethods());
+app.use(config_api.routes(), config_api.allowedMethods());
 // app.use(redis.routes(), redis.allowedMethods());
 
 

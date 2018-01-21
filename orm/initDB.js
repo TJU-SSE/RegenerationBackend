@@ -27,6 +27,7 @@ const NewsTag = require('./model/newsTag');
 const Tag = require('./model/tag');
 const Worker = require('./model/worker');
 const Contact = require('./model/contact');
+const Config = require('./model/config');
 
 let syncAll = async () => {
 
@@ -134,6 +135,10 @@ let syncAll = async () => {
         console.log("create worker success");
     });
 
+    Config.sync().then(function () {
+        console.log("create config success");
+    });
+
     Show.sync().then(async () => {
         console.log("create show success");
     });
@@ -187,5 +192,3 @@ let init = async () => {
 
 
 module.exports = init;
-
-// 标题、时间、作者、正文、封面图片、TAG
