@@ -32,4 +32,30 @@ router.post('/extraTitle', async (ctx, next) => {
     }
 });
 
+router.get('/address', async (ctx, next) => {
+    try {
+        let address = await ConfigRepository.findOrCreateOne('address');
+        let content = address.content;
+        if (content == null) content = '';
+        let ret = {
+            address: content
+        };
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+router.post('/address', async (ctx, next) => {
+    try {
+        let content = ctx.request.body.content;
+        if (!content) { ctx.response.body = ResponseService.createErrResponse('Content not found'); return; }
+        await ConfigRepository.update('address', content);
+        let ret = 'success';
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
 module.exports = router;

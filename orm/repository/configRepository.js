@@ -3,7 +3,7 @@ const Config = require('../model/config');
 let pub = {};
 
 pub.findOrCreateOne = async (key) => {
-    let config = await Config.findOne({id: key});
+    let config = await Config.findOne({where:{id: key}});
     if (!config) {
         config = await Config.create({ id: key });
     }
