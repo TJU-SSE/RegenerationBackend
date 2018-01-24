@@ -1,20 +1,17 @@
 const Sequlize = require('sequelize');
 const sequlize = require('../sequelize');
 
-let Show = sequlize.define('show', {
+let Season = sequlize.define('season', {
     id: {
         type: Sequlize.BIGINT,
         primaryKey: true,
         autoIncrement: true
     },
-    name: Sequlize.STRING(100),
-    year: Sequlize.STRING(100),
-    season: Sequlize.STRING(100),
-    desc: Sequlize.STRING(5000),
-    rank: Sequlize.DOUBLE
+    year: Sequlize.STRING(32),
+    season: Sequlize.STRING(32),
 }, {
     freezeTableName: true,
     timestamps: true,
 });
 
-module.exports = Show;
+module.exports = Season;

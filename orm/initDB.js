@@ -11,6 +11,7 @@ const DesignerCampaign = require('./model/designerCampaign');
 const DesignerBranding = require('./model/designerBranding');
 const DesignerCooperation = require('./model/designerCooperation');
 const Show = require('./model/show');
+const Season = require('./model/season');
 const ShowLink = require('./model/showLink');
 
 
@@ -141,6 +142,10 @@ let syncAll = async () => {
 
     Show.sync().then(async () => {
         console.log("create show success");
+    });
+
+    Season.sync().then(async () => {
+        console.log("create season success");
     });
 
     ShowLink.sync().then(async () => {

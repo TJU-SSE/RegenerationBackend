@@ -73,6 +73,52 @@ router.get('/getAllByDesignerId/:id',  async (ctx, next) => {
     }
 });
 
+router.get('/getAllBySeason/:year/:season',  async (ctx, next) => {
+    try {
+        let year = ctx.params.year;
+        let season = ctx.params.season;
+        let ret = await ShowService.getAllBySeason(year, season);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+router.get('/getSeasons',  async (ctx, next) => {
+    try {
+        let ret = await ShowService.getSeasons();
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+router.post('/createSeason',  async (ctx, next) => {
+    try {
+        let year = ctx.request.body.fields.year;
+        if (!year) { ctx.response.body = ResponseService.createErrResponse('year not found'); return; }
+        let season = ctx.request.body.fields.season;
+        if (!season) { ctx.response.body = ResponseService.createErrResponse('season not found'); return; }
+        let ret = await ShowService.createSeason(year, season);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+router.post('/deleteSeason',  async (ctx, next) => {
+    try {
+        let year = ctx.request.body.fields.year;
+        if (!year) { ctx.response.body = ResponseService.createErrResponse('year not found'); return; }
+        let season = ctx.request.body.fields.season;
+        if (!season) { ctx.response.body = ResponseService.createErrResponse('season not found'); return; }
+        let ret = await ShowService.deleteSeason(year, season);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch(e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
 // OK
 router.get('/getAllByYear',  async (ctx, next) => {
     try {
@@ -90,9 +136,10 @@ router.post('/create', async (ctx, next) => {
         let name = ctx.request.body.fields.name || '';
         let desc = ctx.request.body.fields.desc || '';
         let year = ctx.request.body.fields.year || '';
+        let season = ctx.request.body.fields.season || '';
         let rank = ctx.request.body.fields.rank || 0;
         let timestamp = Date.parse(new Date());
-        let ret = await ShowService.create(name, desc, year, rank, timestamp, file.path);
+        let ret = await ShowService.create(name, desc, year, season, rank, timestamp, file.path);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch (e) {
         ctx.response.body = ResponseService.createErrResponse(e);
@@ -125,7 +172,8 @@ router.post('/update', async (ctx, next) => {
         let name = ctx.request.body.fields.name || '';
         let desc = ctx.request.body.fields.desc || '';
         let year = ctx.request.body.fields.year || '';
-        let ret = await ShowService.update(show, name, desc, year);
+        let season = ctx.request.body.fields.season || '';
+        let ret = await ShowService.update(show, name, desc, year, season);
         ctx.response.body = ResponseService.createJSONResponse(ret);
     } catch(e) {
         ctx.response.body = ResponseService.createErrResponse(e);

@@ -1,5 +1,6 @@
 const ShowRepository = require('../orm/repository/showRepository');
 const ShowLinkRepository = require('../orm/repository/ShowLinkRepository');
+const SeasonRepository = require('../orm/repository/seasonRepository');
 const DesignerService = require('./designerService');
 const Qiniu = require('../utils/qiniu');
 
@@ -9,14 +10,48 @@ pub.findOne = async (filter) => {
     return await ShowRepository.findOne(filter);
 };
 
-pub.create = async (name, desc, year, rank, key, localFile) => {
+pub.create = async (name, desc, year, season, rank, key, localFile) => {
     try {
         let show = null;
         await Qiniu.uploadFile(key, localFile, async function (img) {
-            show = await ShowRepository.create(name, desc, year, rank, img);
+            show = await ShowRepository.create(name, desc, year, season, rank, img);
         });
         let id = show.get('id');
         return {id: id};
+    } catch (e) {
+        return e;
+    }
+};
+
+pub.getSeasons = async () => {
+    try {
+        let seasons = await SeasonRepository.findAll();
+        let ret = [];
+        for (let x in seasons) {
+            let season = seasons[x];
+            let year = season.get('year');
+            let season_int = season.get('season');
+            ret.push({year: year, season: season_int});
+        }
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
+pub.createSeason = async (year, season) => {
+    try {
+        await SeasonRepository.findOrCreate(year, season);
+        return 'success';
+    } catch (e) {
+        return e;
+    }
+};
+
+pub.deleteSeason = async (year, season) => {
+    try {
+        await SeasonRepository.deleteOne({year:year, season:season});
+        return 'success';
     } catch (e) {
         return e;
     }
@@ -98,6 +133,30 @@ pub.getAllByDesignerId = async (designerId) => {
   }
 };
 
+pub.getAllBySeason = async (year, season) => {
+    try {
+        let shows = await ShowRepository.findAllBySeason(year, season);
+        let ret = {};
+        let list = [];
+        for (let x in shows) {
+            let show = shows[x];
+            let id = show.get('id');
+            let name = show.get('name');
+            let desc = show.get('desc');
+            let rank = show.get('rank');
+            let year = show.get('year');
+            let img = await show.getCoverImg();
+            let img_id = img.get('id');
+            let img_url = img.get('url');
+            list.push({id: id, name: name, desc: desc, rank: rank, year: year, img_id: img_id, img_url: img_url});
+        }
+        ret['shows'] = list;
+        return ret;
+    } catch (e) {
+        return e;
+    }
+};
+
 pub.getAllByYear = async () => {
     try {
         let shows = await ShowRepository.findAllByYear();
@@ -141,9 +200,9 @@ pub.updateImg = async (show, key, localFile) => {
     }
 };
 
-pub.update = async (show, name, desc, year) => {
+pub.update = async (show, name, desc, year, season) => {
     try {
-        await ShowRepository.update(show, name, desc, year);
+        await ShowRepository.update(show, name, desc, year, season);
         return 'success';
     } catch (e) {
         return e;

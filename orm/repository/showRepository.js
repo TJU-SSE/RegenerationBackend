@@ -1,5 +1,6 @@
 const Show = require('../model/show');
 const ShowLinkRepository = require('../repository/ShowLinkRepository');
+const SeasonRepository = require('../repository/seasonRepository');
 const Qiniu = require('../../utils/qiniu');
 
 let pub = {};
@@ -23,6 +24,19 @@ pub.findAllByYear = async () => {
     return res;
 };
 
+pub.findAllBySeason = async (year, season) => {
+    let res = await Show.findAll(
+        {
+            'where': {
+                'year': year,
+                'season': season
+            },
+            'order': 'rank'
+        }
+    );
+    return res;
+};
+
 pub.count = async () => {
     return await Show.count();
 };
@@ -40,9 +54,10 @@ pub.findShowLinks = async (show, imgId) => {
     });
 };
 
-pub.create = async (name, desc, year, rank, img) =>{
-    let show = await Show.create({name: name, desc: desc, year: year, rank: rank});
+pub.create = async (name, desc, year, season, rank, img) =>{
+    let show = await Show.create({name: name, desc: desc, year: year, season: season, rank: rank});
     show.setCoverImg(img);
+    await SeasonRepository.findOrCreate(year, season);
     return show;
 };
 
@@ -57,11 +72,13 @@ pub.updateDesigner = async (show, designerId) => {
     await show.save();
 };
 
-pub.update = async (show, name, desc, year) => {
+pub.update = async (show, name, desc, year, season) => {
     if (name) show.name = name;
     if (desc) show.desc = desc;
     if (year) show.year = year;
+    if (season) show.season = season;
     await show.save();
+    await SeasonRepository.findOrCreate(show.get('year'), show.get('season'));
 };
 
 pub.addShowLink = async (show, img) => {
