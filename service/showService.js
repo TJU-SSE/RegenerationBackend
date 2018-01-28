@@ -293,6 +293,20 @@ pub.updateRanks = async (ranks) => {
     }
 };
 
+pub.updateShowLinkRanks = async (ranks) => {
+    try {
+        for (let x in ranks) {
+            let showLink = await ShowLinkRepository.findOne({id:ranks[x].showLinkId});
+            if (showLink) {
+                await ShowRepository.updateRank(showLink, ranks[x].rank);
+            }
+        }
+        return 'success';
+    } catch (e) {
+        return e;
+    }
+};
+
 pub.delete = async (filter) => {
     try {
         await ShowRepository.deleteOne(filter);
@@ -318,7 +332,12 @@ pub.createShowViewModel = async (show) => {
         for(let x in showLinks) {
             let showLink = showLinks[x];
             let img1 = await showLink.getCoverImg();
-            imgs.push({ img_id: img1.get('id'), img_url: img1.get('url') })
+            imgs.push({
+                img_id: img1.get('id'),
+                img_url: img1.get('url'),
+                rank: showLink.get('rank'),
+                show_link_id: showLink.get('id'),
+            })
         }
         ret['imgs'] = imgs.sort((a, b) => { return a.rank - b.rank});
         let designer = await show.getDesigner();

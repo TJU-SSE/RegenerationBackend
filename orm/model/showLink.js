@@ -6,7 +6,8 @@ let ShowLink = sequlize.define('show_link', {
         type: Sequlize.BIGINT,
         primaryKey: true,
         autoIncrement: true
-    }
+    },
+    rank: Sequlize.BIGINT
 }, {
     freezeTableName: true,
     timestamps: true,

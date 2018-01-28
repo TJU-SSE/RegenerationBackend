@@ -29,6 +29,11 @@ pub.update = async (showLink) => {
     await showLink.save();
 };
 
+pub.updateRank = async (showLink, rank) => {
+    showLink.rank = rank;
+    await showLink.save();
+};
+
 pub.deleteOne = async (filter) => {
     let showLink = await pub.findOne(filter);
     await pub.delete(showLink);

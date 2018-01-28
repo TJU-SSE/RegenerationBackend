@@ -276,6 +276,17 @@ router.post('/updateRanks', async (ctx, next) => {
 });
 
 // OK
+router.post('/updateShowImgRanks', async (ctx, next) => {
+    try {
+        let ranks = ctx.request.body.ranks;
+        let ret = await ShowService.updateShowLinkRanks(ranks);
+        ctx.response.body = ResponseService.createJSONResponse(ret);
+    } catch (e) {
+        ctx.response.body = ResponseService.createErrResponse(e);
+    }
+});
+
+// OK
 router.post('/delete', async (ctx, next) => {
     try {
         let id = ctx.request.body.id;
