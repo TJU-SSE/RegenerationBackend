@@ -69,11 +69,12 @@ pub.getAll = async (pageOffset, itemSize) => {
             let name = show.get('name');
             let desc = show.get('desc');
             let rank = show.get('rank');
+            let season = show.get('season');
             let year = show.get('year');
             let img = await show.getCoverImg();
             let img_id = img.get('id');
             let img_url = img.get('url');
-            list.push({id: id, name: name, desc: desc, rank: rank, year: year, img_id: img_id, img_url: img_url});
+            list.push({id: id, name: name, desc: desc, rank: rank, year: year, img_id: img_id, img_url: img_url, season: season});
         }
         ret['shows'] = list;
         return ret;
