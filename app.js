@@ -69,7 +69,8 @@ app.use(async (ctx, next) => {
 
 // cors
 app.use(cors({
-  origin: config.FRONTEND_URL,
+  // origin: config.FRONTEND_URL,
+  origin: '*',
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
   maxAge: 100,
   credentials: true,
