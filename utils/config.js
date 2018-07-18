@@ -1,5 +1,5 @@
 var config = {
-  database: 'regenerationn',
+  database: 'regeneration',
   username: 'test',
   password: 'test',
   host: '212.64.17.49',
