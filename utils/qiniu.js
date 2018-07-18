@@ -44,19 +44,19 @@ let _deleteFile = async function (img, res) {
 };
 
 pub.uploadFile = async (key, localFile, callback) => {
-    await new Promise((resolve, reject) => {
-        _uploadFile(key, localFile, callback, async function () {
-            resolve();
-        });
-    });
+    // await new Promise((resolve, reject) => {
+    //     _uploadFile(key, localFile, callback, async function () {
+    //         resolve();
+    //     });
+    // });
 };
 
 pub.deleteFile = async (img) => {
-    await new Promise((resolve, reject) => {
-        _deleteFile(img, async function () {
-            resolve();
-        });
-    });
+    // await new Promise((resolve, reject) => {
+    //     _deleteFile(img, async function () {
+    //         resolve();
+    //     });
+    // });
 };
 
 module.exports = pub;

@@ -1,18 +1,20 @@
 var config = {
   database: 'regenerationn',
-  username: 'root',
-  password: 'qianyu123',
-  host: '123.207.243.143',
+  username: 'test',
+  password: 'test',
+  host: '212.64.17.49',
   port: 3306,
   dialect: 'mysql',
-  ACCESS_KEY: '3ZUTdXYFVHSP3i1xr0b28YiT5zpPr2J7XGtAnNUa',
-  SECRET_KEY: 'EjeAdfnjLX6Ij9TT7eVQoDpvxpAuz6lYHtFACNzH',
-  bucket: 'regenerationpub',
+  ACCESS_KEY: 'opKzqbb_E-y_yKjCufAu8KOiBzlhMXH2G-EXuKVj',
+  SECRET_KEY: 'b6pyxBh1o8PCNALdlihIZv54wOxqrbxVohrRLQPH',
+  bucket: 'infotest',
   filePath: '../img/',
   // download: 'http://oq7eluo6z.bkt.clouddn.com/'
-  download: 'http://orbctx8xa.bkt.clouddn.com/',
+  // download: 'http://orbctx8xa.bkt.clouddn.com/',
+  download: 'http://pc0bksa0g.bkt.clouddn.com/',
 
-  FRONTEND_URL: 'http://localhost:8000'
+  // FRONTEND_URL: 'http://localhost:8000'
+  FRONTEND_URLS: ['http://localhost:8000', 'http://212.64.17.49:8000']
 };
 
 module.exports = config;
