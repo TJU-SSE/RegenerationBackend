@@ -14,7 +14,7 @@ var config = {
   download: 'http://pc0bksa0g.bkt.clouddn.com/',
 
   // FRONTEND_URL: 'http://localhost:8000'
-  FRONTEND_URLS: ['http://localhost:8000', 'http://212.64.17.49:8000']
+  FRONTEND_URLS: ['http://localhost:8080', 'http://212.64.17.49:8000']
 };
 
 module.exports = config;
