@@ -30,6 +30,8 @@ const Worker = require('./model/worker');
 const Contact = require('./model/contact');
 const Config = require('./model/config');
 
+const Message = require('./model/message')
+
 let syncAll = async () => {
 
     Img.sync().then(function () {
@@ -151,6 +153,10 @@ let syncAll = async () => {
     ShowLink.sync().then(async () => {
         console.log("create show_link success");
     });
+
+    Message.sync().then(async () => {
+        console.log("create message success");
+    })
 };
 
 let init = async () => {

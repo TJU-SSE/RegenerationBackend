@@ -27,6 +27,7 @@ const contact = require('./routes/contact');
 const config_api = require('./routes/config');
 const show = require('./routes/show');
 const redis = require('./routes/redis');
+const message = require('./routes/message');
 
 const checkAuthority = require('./middleware/authority');
 
@@ -99,6 +100,7 @@ app.use(worker.routes(), worker.allowedMethods());
 app.use(show.routes(), show.allowedMethods());
 app.use(contact.routes(), contact.allowedMethods());
 app.use(config_api.routes(), config_api.allowedMethods());
+app.use(message.routes(), message.allowedMethods());
 // app.use(redis.routes(), redis.allowedMethods());
 
 
