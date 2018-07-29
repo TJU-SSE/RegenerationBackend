@@ -25,9 +25,10 @@ pub.sendMail = async (email, content, varificationCode) => {
         // bcc     : ''  //密送
         subject: '[!]来自Regeneration.cn的表单',
         text: '[!]来自Regeneration.cn的表单',
-        html: '<h1>email</h1>' + '<p>' + email + '</p><br>' + 
-            '<h1>content</h1>' + '<p>' + content + '</p><br>' + 
-            '<h1>name</h1>' + '<p>' + varificationCode + '</p><br>'
+        html: 
+            '<h1>name</h1>' + '<p>' + varificationCode + '</p><br>' + 
+            '<h1>email</h1>' + '<p>' + email + '</p><br>' + 
+            '<h1>content</h1>' + '<p>' + content + '</p><br>',
     };
 
     mailTransport.sendMail(options, function (err, msg) {
