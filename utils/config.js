@@ -9,7 +9,7 @@ var config = {
   SECRET_KEY: 'b6pyxBh1o8PCNALdlihIZv54wOxqrbxVohrRLQPH',
   // ACCESS_KEY: 'opKzqbb_E-y_yKjCufAu8KOiBzlhMXH2G-EXuKVj',
   // SECRET_KEY: 'b6pyxBh1o8PCNALdlihIZv54wOxqrbxVohrRLQPH',
-  bucket: 'infotest',
+  bucket: 'inforegen',
   filePath: '../img/',
   // download: 'http://oq7eluo6z.bkt.clouddn.com/'
   // download: 'http://orbctx8xa.bkt.clouddn.com/',
